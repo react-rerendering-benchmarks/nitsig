@@ -1,27 +1,21 @@
+import { useCallback } from "react";
 import jsx from "texsaur";
 import Button from "../components/Button";
 import { Table } from "../components/Table";
 import Icon from "../components/Icon";
-
 const components = ["Icon", "Button", "Table"];
-
 export function createComponentsPage() {
   if (!document.location.href.toLowerCase().includes("components")) {
     return;
   }
   document.body.innerHTML = "";
   document.title = "Components";
-
-  const sidebarItems = components.map((component) => (
-    <a href={`#${component}`} key={component}>
+  const sidebarItems = components.map(component => <a href={`#${component}`} key={component}>
       <li className="se-sidebar-item">
         {component}
       </li>
-    </a>
-  ));
-
-  const page = (
-    <div className="se-docs-container">
+    </a>);
+  const page = <div className="se-docs-container">
       {/* Sidebar */}
       <div className="se-sidebar">
         <img src={chrome.runtime.getURL("images/logo/extended.png")} alt="NitSig Logo" width="100" />
@@ -38,36 +32,27 @@ export function createComponentsPage() {
         </div>
 
         {/* Icon */}
-        <Component name="Icon"
-          description="Talking about icons, we exclusive use the Remix Icon library, the outlined style! Check remixicon.com for all the available icons."
-          code={`
+        <Component name="Icon" description="Talking about icons, we exclusive use the Remix Icon library, the outlined style! Check remixicon.com for all the available icons." code={`
 <Icon name="ri-notification-line" />
-            `}
-        >
+            `}>
           <Icon name="ri-notification-line" />
         </Component>
 
         {/* Button */}
-        <Component name="Button"
-          description="Our button abstraction that can be used to create buttons with icons and text."
-          code={`
+        <Component name="Button" description="Our button abstraction that can be used to create buttons with icons and text." code={`
 <Button
   name="my_button"
   text="Click me"
   icon="ri-notification-line"
   onclick={() => alert("Button was clicked")}
 />
-            `}
-
-        >
-          <Button title="my_button" icon="ri-notification-line" onclick={() => alert("Button was clicked")} />
+            `}>
+          <Button title="my_button" icon="ri-notification-line" onclick={useCallback(() => alert("Button was clicked"), [])} />
         </Component>
 
 
         {/* Table */}
-        <Component name="Table"
-          description="A simple table design with sorting capabilities on column headers."
-          code={`
+        <Component name="Table" description="A simple table design with sorting capabilities on column headers." code={`
 <Table
   name="my_table"
   headers={[
@@ -80,36 +65,23 @@ export function createComponentsPage() {
     ["Input", "A text input field", "Complete"]
   ]}
 />
-            `}
-        >
-          <Table
-            name="my_table"
-            headers={[
-              ["Component", "Component"],
-              ["Description", "Description"],
-              ["Status", "Status"]
-            ]}
-            data={[
-              ["Button", "A button that can be clicked", "In progress"],
-              ["Input", "A text input field", "Complete"]
-            ]}
-          />
+            `}>
+          <Table name="my_table" headers={[["Component", "Component"], ["Description", "Description"], ["Status", "Status"]]} data={[["Button", "A button that can be clicked", "In progress"], ["Input", "A text input field", "Complete"]]} />
         </Component>
       </div>
-    </div>
-  );
-
+    </div>;
   document.body.appendChild(page);
 }
-
 interface ComponentProps {
   name: string;
   description: string;
   code: string;
 }
-
-const Component: JSX.Component<ComponentProps> = ({ name, description, code }, children) => (
-  <div id={name} className="se-component-section" >
+const Component: JSX.Component<ComponentProps> = ({
+  name,
+  description,
+  code
+}, children) => <div id={name} className="se-component-section">
     <h2>{name}</h2>
     <p>{description}</p>
     <div className="se-component-show">
@@ -118,5 +90,4 @@ const Component: JSX.Component<ComponentProps> = ({ name, description, code }, c
     <pre className="se-code-block">
       {code}
     </pre>
-  </div>
-);
+  </div>;

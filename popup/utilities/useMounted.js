@@ -1,17 +1,16 @@
+import { useRef } from "react";
 /*-- Example usage
   import useMounted from "hooks/useMounted"
 
   const mounted = useMounted()
 --*/
 
-import { useEffect, useState } from "react"
-
+import { useEffect, useState } from "react";
 const useMounted = () => {
-  const [hasMounted, setHasMounted] = useState(false)
+  const hasMounted = useRef(false);
   useEffect(() => {
-    setHasMounted(true)
-  }, [])
-  return hasMounted
-}
-
-export default useMounted
+    hasMounted.current = true;
+  }, []);
+  return hasMounted.current;
+};
+export default useMounted;
